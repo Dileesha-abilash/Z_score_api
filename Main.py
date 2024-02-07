@@ -105,10 +105,10 @@ def stru_json(com):
         category, university_and_amount = item.split("  ||  ")
         university, amount = university_and_amount.split(" $ ")
         amount = float(amount)
-        converted_data.append({'category': category, 'university': university, 'z-score': amount})
+        converted_data.append({'category': f"{category}", 'university': f"{university}", 'z-score': f'{amount}'})
 
-    json_data = json.dumps(converted_data, indent=2)
-    return json_data
+    # json_data = json.dumps(converted_data, indent=2)
+    return converted_data
 
 
 def json_out(json_not_stuc):
