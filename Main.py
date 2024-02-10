@@ -99,8 +99,33 @@ def subs(s1, s2, s3):
                 if (s1 in Main_sets)and(s2 in Main_sets)and (s3 in Main_sets):
                     cap_subjects.append(main_file_lines[i].split("||")[0])
             else:
-                pass        
-                
+                        Main_splitted =  main_file_lines[i].split("||")[1]
+                        my_sub = [s1,s2,s3]
+                        my_sub2 = [s1,s2,s3]
+                        split_subs_mand_or_not = Main_splitted.split("#")
+                        mand = split_subs_mand_or_not[0].split(",")
+                        opt = split_subs_mand_or_not[1].split(",")
+                        # for i in split_subs:
+                        #     if "#" not in split_subs:
+                        #           mand.append(split_subs)
+                        for ssss in range(len(mand)):
+                           mand[ssss]= mand[ssss].strip()
+                            
+                        for kkkk in range(len(opt)):
+                            opt[kkkk]= opt[kkkk].strip()
+                        
+                        #ex man s2,s3
+                        #have s1,s2,s3
+                        for mys in my_sub2:
+                            if mys in mand:
+                                my_sub.pop(my_sub.index(mys))
+                                mand.pop(mand.index(mys))
+                                if len(mand) == 0 :
+                                    for sub_opt in my_sub:
+                                        if sub_opt in opt:
+                                            my_sub.pop(my_sub.index(sub_opt))
+                                    if len(my_sub)==0:
+                                        cap_subjects.append(main_file_lines[i].split("||")[0])   
             # $ not # have
         else:
                 # $ have
