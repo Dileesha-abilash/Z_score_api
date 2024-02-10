@@ -86,13 +86,21 @@ def subs(s1, s2, s3):
             # $ not # not
             if "#" not in main_file_lines[i]:
                 ## only sets not mandadary subjects
-                sub_sets = main_file_lines[i].split("||")[1].split("$")
-                for subset_iter_number_dolor in range(len(sub_sets)):
-                    split_subs = sub_sets[ subset_iter_number_dolor].split(",")
-                    if (s1 in split_subs) and (s1 in split_subs) and (s1 in split_subs):
-                        # print((k[i].split("||")[0]))
-                        cap_subjects.append(main_file_lines[i].split("||")[0])
-                        break
+                Main_sets = main_file_lines[i].split("||")[1].split(",")
+                # for subset_iter_number_dolor in range(len(sub_sets)):
+                #     split_subs = sub_sets[ subset_iter_number_dolor].split(",")
+                #     if (s1 in split_subs) and (s1 in split_subs) and (s1 in split_subs):
+                #         # print((k[i].split("||")[0]))
+                #         cap_subjects.append(main_file_lines[i].split("||")[0])
+                #         break
+                
+                for iiiiiii in range(len(Main_sets)):
+                    Main_sets[iiiiiii] =Main_sets[iiiiiii].strip()
+                if (s1 in Main_sets)and(s2 in Main_sets)and (s3 in Main_sets):
+                    cap_subjects.append(main_file_lines[i].split("||")[0])
+            else:
+                pass        
+                
             # $ not # have
         else:
                 # $ have
