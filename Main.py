@@ -58,6 +58,7 @@ def zScore(district, mark):
 
 
 def subs(s1, s2, s3):
+    # p = open("whiyr","a+")
     subjects_all = {
         "COMBINED MATHEMATICS", "BUDDHISM", "HINDUISM",  # ... (other subjects)
         "GEOGRAPHY", "COMMUNICATION & MEDIA STUDIES"
@@ -65,17 +66,100 @@ def subs(s1, s2, s3):
     
     file_subject_req = open("test")
     k = file_subject_req.readlines()
+    # for ff in k :
+    #     print("thisis before",ff,file=p)
+    #     ff.replace("\n","")
+    #     print("thisis after",ff,file=p)
+    #     break
+         
     cap_subjects = []
 
     for i in range(len(k)):
-        one_line_sub = k[i].split("||")[1].split(",")
+        # print(k[i])
+        # print((k[i].split("||")[0]))
+        # print(cap_subjects)
+        if "$" not in k[i]:
+            # $ not # not
+            if "#" not in k[i]:
+                ## only sets not mandadary subjects
+                sub_sets = k[i].split("||")[1].split("$")
+                for kl in range(len(sub_sets)):
+                    split_subs = sub_sets[kl].split(",")
+                    if (s1 in split_subs) and (s1 in split_subs) and (s1 in split_subs):
+                        # print((k[i].split("||")[0]))
+                        cap_subjects.append(k[i].split("||")[0])
+                        break
+            # $ not # have
+            else:
+                # $ have
+                
+                sub_sets = k[i].split("||")[1].split("$")
+                for kl in range(len(sub_sets)):
+                    # $ have # not
+                    if "#" not in sub_sets[kl]:
+                        split_subs = sub_sets[kl].split(",")
+                        if (s1 in split_subs) and (s2 in split_subs) and (s3 in split_subs):
+                            cap_subjects.append(k[i].split("||")[0])
+                            break
+                     # $ have # have
+                    else:
+                        sub_sets = k[i].split("||")[1].split("$")
+                        my_sub = [s1,s2,s3]
+                        split_subs_mand_or_not = sub_sets[kl].split("#")
+                        mand = split_subs_mand_or_not[1].split(",")
+                        opt = split_subs_mand_or_not[0].split(",")
+                        # for i in split_subs:
+                        #     if "#" not in split_subs:
+                        #           mand.append(split_subs)
+                        for mys in my_sub:
+                            if mys in mand:
+                                my_sub.pop(mys)
+                                mand.pop(mys)
+                                if len(mand) == 0 :
+                                    for sub_opt in my_sub:
+                                        if sub_opt in opt:
+                                            my_sub.pop(my_sub)
+                                    if len(my_sub)==0:
+                                        cap_subjects.append(k[i].split("||")[0])
+                        
+                        
+                        
+        else:  
+            if "#" not in k[i]:
+              
+                one_line_sub = k[i].split("||")[1].split(",")
+                one_line_sub[-1]= (one_line_sub[-1].replace("\n",""))
+                # print(one_line_sub)
+                for p in range(len(one_line_sub)):
+                    one_line_sub[p] = one_line_sub[p].strip()
 
-        for p in range(len(one_line_sub)):
-            one_line_sub[p] = one_line_sub[p].strip()
-
-        if (s1 in one_line_sub) and (s2 in one_line_sub) and (s3 in one_line_sub):
-            cap_subjects.append(k[i].split("||")[0])
-
+                if (s1 in one_line_sub) and (s2 in one_line_sub) and (s3 in one_line_sub):
+                    cap_subjects.append(k[i].split("||")[0])
+            else:
+                        # try:
+                        #     my_sub.clear()
+                            
+                        # except:
+                        #     pass
+                        my_sub = [s1,s2,s3]
+                        split_subs_mand_or_not = sub_sets[kl].split("#")
+                        mand = split_subs_mand_or_not[1].split(",")
+                        opt = split_subs_mand_or_not[0].split(",")
+                        # for i in split_subs:
+                        #     if "#" not in split_subs:
+                        #           mand.append(split_subs)
+                        for mys in my_sub:
+                            if mys in mand:
+                                my_sub.pop(mys)
+                                mand.pop(mys)
+                                if len(mand) == 0 :
+                                    for sub_opt in my_sub:
+                                        if sub_opt in opt:
+                                            my_sub.pop(my_sub)
+                                    if len(my_sub)==0:
+                                        cap_subjects.append(k[i].split("||")[0])
+                        
+    print(cap_subjects) 
     return cap_subjects
 
 
@@ -122,4 +206,5 @@ if __name__ == "__main__":
     gg = "RATNAPURA"
     z = 1.372
     bb = 0.4
-    Main(ss1, ss2, ss3, gg, z, bb)
+    # Main("COMBINED MATHEMATICS", "PHYSICS", "CHEMISTRY", gg, z, bb)
+    subs("COMBINED MATHEMATICS", "BUDDHISM", "PALI")
