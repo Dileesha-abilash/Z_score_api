@@ -97,7 +97,7 @@ def subs(s1, s2, s3):
                 for iiiiiii in range(len(Main_sets)):
                     Main_sets[iiiiiii] =Main_sets[iiiiiii].strip()
                 if (s1 in Main_sets)and(s2 in Main_sets)and (s3 in Main_sets):
-                    cap_subjects.append(main_file_lines[i].split("||")[0])
+                    cap_subjects.append(main_file_lines[i].split("||")[0].strip())
             else:
                         Main_splitted =  main_file_lines[i].split("||")[1]
                         my_sub = [s1,s2,s3]
@@ -121,12 +121,15 @@ def subs(s1, s2, s3):
                                 my_sub.pop(my_sub.index(mys))
                                 mand.pop(mand.index(mys))
                                 if len(mand) == 0 :
-                                    for sub_opt in my_sub:
-                                        if sub_opt in opt:
-                                            my_sub.pop(my_sub.index(sub_opt))
-                                    if len(my_sub)==0:
-                                        cap_subjects.append(main_file_lines[i].split("||")[0])   
-            # $ not # have
+                                    for sub_opt in my_sub2:
+                                        try:
+                                                my_sub.pop(my_sub.index(sub_opt))
+                                        except:
+                                                pass
+                                        if len(my_sub)==0:
+                                            cap_subjects.append(main_file_lines[i].split("||")[0].strip())   
+                                            break          
+            # $ have # have
         else:
                 # $ have
                 
@@ -135,9 +138,13 @@ def subs(s1, s2, s3):
                     # $ have # not
                     if "#" not in sub_sets[ subset_iter_number_dolor]:
                         split_subs = sub_sets[ subset_iter_number_dolor].split(",")
+                        for bkkk in range(len(split_subs)):
+                            split_subs[bkkk] = split_subs[bkkk].strip()
+                        
                         if (s1 in split_subs) and (s2 in split_subs) and (s3 in split_subs):
-                            cap_subjects.append(main_file_lines[i].split("||")[0])
+                            cap_subjects.append(main_file_lines[i].split("||")[0].strip())
                             break
+                    
                      # $ have # have
                     else:
                         # sub_sets =main_file_lines[i].split("||")[1].split("$")
@@ -162,16 +169,22 @@ def subs(s1, s2, s3):
                                 my_sub.pop(my_sub.index(mys))
                                 mand.pop(mand.index(mys))
                                 if len(mand) == 0 :
-                                    for sub_opt in my_sub:
+                                    for sub_opt in my_sub2:
                                         if sub_opt in opt:
-                                            my_sub.pop(my_sub.index(sub_opt))
-                                    if len(my_sub)==0:
-                                        cap_subjects.append(main_file_lines[i].split("||")[0])
-                        
-                        
+                                            try:
+                                                my_sub.pop(my_sub.index(sub_opt))
+                                            except:
+                                                pass
+                                        if len(my_sub)==0:
+                                            cap_subjects.append(main_file_lines[i].split("||")[0].strip())
+                                            break 
+                        # print((main_file_lines[i].split("||")[0].strip()) in cap_subjects)
+                        # print(cap_subjects)
+                        if (main_file_lines[i].split("||")[0].strip()) in cap_subjects:
+                            break
                         
         
-    print(cap_subjects) 
+    # print(cap_subjects) 
     return cap_subjects
 
 
@@ -219,4 +232,7 @@ if __name__ == "__main__":
     z = 1.372
     bb = 0.4
     # Main("COMBINED MATHEMATICS", "PHYSICS", "CHEMISTRY", gg, z, bb)
-    subs("COMBINED MATHEMATICS", "BUDDHISM", "PALI")
+    # k1232 = subs("CHEMISTRY", "PHYSICS", "HIGHER MATHEMATICS")
+    # subs("CHEMISTRY", "PHYSICS", "HIGHER MATHEMATICS")
+    # k1232 = subs("INFORMATION & COMMUNICATION TECHNOLOGY", "LOGIC & SCIENTIFIC METHOD", "FRENCH")
+    # print(len(k1232))
