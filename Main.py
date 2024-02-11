@@ -58,24 +58,133 @@ def zScore(district, mark):
 
 
 def subs(s1, s2, s3):
+    s1 = s1.strip()
+    s2 = s2.strip()
+    s3 = s3.strip()
+    
+    # p = open("whiyr","a+")
     subjects_all = {
         "COMBINED MATHEMATICS", "BUDDHISM", "HINDUISM",  # ... (other subjects)
         "GEOGRAPHY", "COMMUNICATION & MEDIA STUDIES"
     }
     
     file_subject_req = open("test")
-    k = file_subject_req.readlines()
+    main_file_lines = file_subject_req.readlines()
+    # for ff in k :
+    #     print("thisis before",ff,file=p)
+    #     ff.replace("\n","")
+    #     print("thisis after",ff,file=p)
+    #     break
+         
     cap_subjects = []
 
-    for i in range(len(k)):
-        one_line_sub = k[i].split("||")[1].split(",")
-
-        for p in range(len(one_line_sub)):
-            one_line_sub[p] = one_line_sub[p].strip()
-
-        if (s1 in one_line_sub) and (s2 in one_line_sub) and (s3 in one_line_sub):
-            cap_subjects.append(k[i].split("||")[0])
-
+    for i in range(len(main_file_lines)):
+        # print(k[i])
+        # print((k[i].split("||")[0]))
+        # print(cap_subjects)
+        if "$" not in main_file_lines[i]:
+            # $ not # not
+            if "#" not in main_file_lines[i]:
+                ## only sets not mandadary subjects
+                Main_sets = main_file_lines[i].split("||")[1].split(",")
+                # for subset_iter_number_dolor in range(len(sub_sets)):
+                #     split_subs = sub_sets[ subset_iter_number_dolor].split(",")
+                #     if (s1 in split_subs) and (s1 in split_subs) and (s1 in split_subs):
+                #         # print((k[i].split("||")[0]))
+                #         cap_subjects.append(main_file_lines[i].split("||")[0])
+                #         break
+                
+                for iiiiiii in range(len(Main_sets)):
+                    Main_sets[iiiiiii] =Main_sets[iiiiiii].strip()
+                if (s1 in Main_sets)and(s2 in Main_sets)and (s3 in Main_sets):
+                    cap_subjects.append(main_file_lines[i].split("||")[0].strip())
+            else:
+                        Main_splitted =  main_file_lines[i].split("||")[1]
+                        my_sub = [s1,s2,s3]
+                        my_sub2 = [s1,s2,s3]
+                        split_subs_mand_or_not = Main_splitted.split("#")
+                        mand = split_subs_mand_or_not[0].split(",")
+                        opt = split_subs_mand_or_not[1].split(",")
+                        # for i in split_subs:
+                        #     if "#" not in split_subs:
+                        #           mand.append(split_subs)
+                        for ssss in range(len(mand)):
+                           mand[ssss]= mand[ssss].strip()
+                            
+                        for kkkk in range(len(opt)):
+                            opt[kkkk]= opt[kkkk].strip()
+                        
+                        #ex man s2,s3
+                        #have s1,s2,s3
+                        for mys in my_sub2:
+                            if mys in mand:
+                                my_sub.pop(my_sub.index(mys))
+                                mand.pop(mand.index(mys))
+                                if len(mand) == 0 :
+                                    for sub_opt in my_sub2:
+                                        try:
+                                                my_sub.pop(my_sub.index(sub_opt))
+                                        except:
+                                                pass
+                                        if len(my_sub)==0:
+                                            cap_subjects.append(main_file_lines[i].split("||")[0].strip())   
+                                            break          
+            # $ have # have
+        else:
+                # $ have
+                
+                sub_sets = main_file_lines[i].split("||")[1].split("$")
+                for  subset_iter_number_dolor in range(len(sub_sets)):
+                    # $ have # not
+                    if "#" not in sub_sets[ subset_iter_number_dolor]:
+                        split_subs = sub_sets[ subset_iter_number_dolor].split(",")
+                        for bkkk in range(len(split_subs)):
+                            split_subs[bkkk] = split_subs[bkkk].strip()
+                        
+                        if (s1 in split_subs) and (s2 in split_subs) and (s3 in split_subs):
+                            cap_subjects.append(main_file_lines[i].split("||")[0].strip())
+                            break
+                    
+                     # $ have # have
+                    else:
+                        # sub_sets =main_file_lines[i].split("||")[1].split("$")
+                        my_sub = [s1,s2,s3]
+                        my_sub2 = [s1,s2,s3]
+                        split_subs_mand_or_not = sub_sets[ subset_iter_number_dolor].split("#")
+                        mand = split_subs_mand_or_not[0].split(",")
+                        opt = split_subs_mand_or_not[1].split(",")
+                        # for i in split_subs:
+                        #     if "#" not in split_subs:
+                        #           mand.append(split_subs)
+                        for ssss in range(len(mand)):
+                           mand[ssss]= mand[ssss].strip()
+                            
+                        for kkkk in range(len(opt)):
+                            opt[kkkk]= opt[kkkk].strip()
+                        
+                        #ex man s2,s3
+                        #have s1,s2,s3
+                        for mys in my_sub2:
+                            if mys in mand:
+                                my_sub.pop(my_sub.index(mys))
+                                mand.pop(mand.index(mys))
+                                if len(mand) == 0 :
+                                    for sub_opt in my_sub2:
+                                        if sub_opt in opt:
+                                            try:
+                                                my_sub.pop(my_sub.index(sub_opt))
+                                            except:
+                                                pass
+                                        if len(my_sub)==0:
+                                            cap_subjects.append(main_file_lines[i].split("||")[0].strip())
+                                            break 
+                        # print((main_file_lines[i].split("||")[0].strip()) in cap_subjects)
+                        # print(cap_subjects)
+                        if (main_file_lines[i].split("||")[0].strip()) in cap_subjects:
+                            break
+                        
+        
+    # print(cap_subjects) 
     return cap_subjects
 
 
@@ -122,4 +231,8 @@ if __name__ == "__main__":
     gg = "RATNAPURA"
     z = 1.372
     bb = 0.4
-    Main(ss1, ss2, ss3, gg, z, bb)
+    # Main("COMBINED MATHEMATICS", "PHYSICS", "CHEMISTRY", gg, z, bb)
+    # k1232 = subs("CHEMISTRY", "PHYSICS", "HIGHER MATHEMATICS")
+    # subs("CHEMISTRY", "PHYSICS", "HIGHER MATHEMATICS")
+    # k1232 = subs("INFORMATION & COMMUNICATION TECHNOLOGY", "LOGIC & SCIENTIFIC METHOD", "FRENCH")
+    # print(len(k1232))
