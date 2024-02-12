@@ -1,0 +1,6 @@
+  $ not # not
+$ not # have
+$have # not
+
+okkoma output stip karalada ballanna
+                        
