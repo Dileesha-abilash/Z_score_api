@@ -30,25 +30,28 @@ SndevBio = 15.26
 
 def out_str(data):
     output = []
+    try:
+        for item in data:
+            parts = item.split(" # ")
+            zscore, subjects = parts[0], parts[1]
+            subject_values, difference = subjects.split(" :: ")
+            subject1, subject2, subject3 = map(int, subject_values.split())
+            output.append({
+                "zscore": float(zscore),
+                "Pysics": subject1,
+                "maths": subject2,
+                "chemestry": subject3,
+                "difference": float(difference)
+            })
 
-    for item in data:
-        parts = item.split(" # ")
-        zscore, subjects = parts[0], parts[1]
-        subject_values, difference = subjects.split(" :: ")
-        subject1, subject2, subject3 = map(int, subject_values.split())
-        output.append({
-            "zscore": float(zscore),
-            "Pysics": subject1,
-            "maths": subject2,
-            "chemestry": subject3,
-            "difference": float(difference)
-        })
-
-    json_output = json.dumps(output, indent=4)
-    return json_output
-
+        json_output = json.dumps(output, indent=4)
+        return json_output
+    except:
+        return '[{"error":"Not possible"}]'
 def find_indexes(array, value):
     # all_dup = []
+    # all_dup = []
+    
     for i in range(len(array)):
         if array[i] == value:
             all_dup.append(i)
@@ -86,7 +89,17 @@ def get_closest_numbers(checking_number, numbers):
 
 
 def z_cal (s1,s2,s3,math=True):
-  
+    phyMean = 37.12
+    SndevPhy = 15.78
+
+    mathMean = 33.17
+    SndevMath = 23.47
+
+    chemMean = 35.77
+    SndevChem = 15.78
+
+    bioMean = 43.78
+    SndevBio = 15.26
     if math == True:
       zed = ((s1 - phyMean) /SndevPhy) + ((s2 - mathMean) /SndevMath) +((s3 - chemMean) /SndevChem)
       zed /=3
@@ -116,11 +129,13 @@ def sybol_cal(sybol):
    
 
 # print(sybol_cal("S"))
-seleMin = []
-seleMax = []
-all_dup = []
-final_selc = []
+
 def guess_es (z,syb1,syb2,syb3,math=True):
+    final_selc = []
+    seleMin = []
+    seleMax = []
+    global all_dup
+    all_dup = []
     count = 0
     range_s1 = sybol_cal(syb1)
     range_s2 = sybol_cal(syb2)
@@ -128,9 +143,10 @@ def guess_es (z,syb1,syb2,syb3,math=True):
     if z_cal(range_s1[0],range_s2[0],range_s3[0],math) > z:
     #   print("grette")
       print("not working")
+      return [f"{z_cal(range_s1[0],range_s2[0],range_s3[0],math)} #  {s1_1} {s2_2} {s3_3} :: value"]
 
     else:
-    #   print("chill")
+        # print("chill")
         if z_cal(range_s1[1],range_s2[1],range_s3[1],math) > z:
             
             # print(z_cal(range_s1[1],range_s2[1],range_s3[1],True),z)
@@ -182,7 +198,7 @@ def guess_es (z,syb1,syb2,syb3,math=True):
 # s3 = chem   dont change the order
 
 
-print(out_str(guess_es(.5185,"S","S","A",False)))
+print(out_str(guess_es(2.5185,"S","S","A",False)))
 
 
 
