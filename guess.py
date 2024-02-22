@@ -1,6 +1,6 @@
 
 import heapq
-
+import json
 s1_syb = "A"
 s2_syb = "A"
 s3_syb = "A"
@@ -28,7 +28,24 @@ bioMean = 43.78
 SndevBio = 15.26
 
 
+def out_str(data):
+    output = []
 
+    for item in data:
+        parts = item.split(" # ")
+        zscore, subjects = parts[0], parts[1]
+        subject_values, difference = subjects.split(" :: ")
+        subject1, subject2, subject3 = map(int, subject_values.split())
+        output.append({
+            "zscore": float(zscore),
+            "Pysics": subject1,
+            "maths": subject2,
+            "chemestry": subject3,
+            "difference": float(difference)
+        })
+
+    json_output = json.dumps(output, indent=4)
+    return json_output
 
 def find_indexes(array, value):
     # all_dup = []
@@ -76,6 +93,8 @@ def z_cal (s1,s2,s3,math=True):
     
     else:
       zed = ((s1 - phyMean) /SndevPhy) + ((s2 - bioMean) /SndevBio) +((s3 - chemMean) /SndevChem)/3
+      zed /=3
+
     return zed
 
 # print(z_cal(s1_max,s2_max,s3_max,True))
@@ -101,18 +120,18 @@ seleMin = []
 seleMax = []
 all_dup = []
 final_selc = []
-def guess_es (z,syb1,syb2,syb3):
+def guess_es (z,syb1,syb2,syb3,math=True):
     count = 0
     range_s1 = sybol_cal(syb1)
     range_s2 = sybol_cal(syb2)
     range_s3 = sybol_cal(syb3)
-    if z_cal(range_s1[0],range_s2[0],range_s3[0],True) > z:
+    if z_cal(range_s1[0],range_s2[0],range_s3[0],math) > z:
     #   print("grette")
       print("not working")
 
     else:
     #   print("chill")
-        if z_cal(range_s1[1],range_s2[1],range_s3[1],True) > z:
+        if z_cal(range_s1[1],range_s2[1],range_s3[1],math) > z:
             
             # print(z_cal(range_s1[1],range_s2[1],range_s3[1],True),z)
             # print( z_cal(range_s1[0],range_s2[0],range_s3[0],True),z)
@@ -123,7 +142,7 @@ def guess_es (z,syb1,syb2,syb3):
                     for s3_3 in range(range_s3[0],range_s3[1]+1):
                         # if len(seleMax) >= 5:
                         #    break
-                        calculated_z = z_cal(s1_1,s2_2,s3_3,True)
+                        calculated_z = z_cal(s1_1,s2_2,s3_3,math)
                         if z-0.1 < calculated_z < z+0.1:
                            seleMin.append(f"{calculated_z} #  {s1_1} {s2_2} {s3_3}")
                         # if z < calculated_z < z+0.1:
@@ -142,15 +161,28 @@ def guess_es (z,syb1,syb2,syb3):
             for lk in closer:
                find_indexes(seleMax,lk)
             for cl in all_dup:
-               
-               final_selc.append(seleMin[cl])
+            #    print(seleMin[cl])
+            #    break
+               p  =  float(seleMin[cl].split('#')[0])
+               if p <= z:
+                    stin = f"{seleMin[cl]} :: {z - p}"  # Assuming you want to subtract an integer
+               else:
+                    stin = f"{seleMin[cl]} :: { p - z}"  # Assuming you want to subtract an integer
+                  
+
+               final_selc.append(stin)
 
             
-            print(final_selc)
-            print(len(final_selc))
+            return(final_selc)
+            # print(len(final_selc))
         else:
            print("not working")
-guess_es(1.9485,"C","C","A")
+# s1 = phy
+# s2 = math
+# s3 = chem   dont change the order
+
+
+print(out_str(guess_es(.5185,"S","S","A",False)))
 
 
 
