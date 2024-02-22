@@ -1,3 +1,6 @@
+
+import heapq
+
 s1_syb = "A"
 s2_syb = "A"
 s3_syb = "A"
@@ -24,9 +27,46 @@ SndevChem = 15.78
 bioMean = 43.78
 SndevBio = 15.26
 
+
+
+
+def find_indexes(array, value):
+    # all_dup = []
+    for i in range(len(array)):
+        if array[i] == value:
+            all_dup.append(i)
+    return all_dup
+
+
+def get_closest_numbers(checking_number, numbers):
+    # Create a min heap to store the differences and corresponding numbers
+    min_heap = []
+    # Set to store unique numbers
+    unique_numbers = set()
+
+    # Iterate through each number in the array
+    for num in numbers:
+        # Calculate the absolute difference between the checking number and the current number
+        diff = abs(checking_number - num)
+        # Push the negative difference and the number to the heap
+        # This is done to simulate a max heap behavior using a min heap
+        heapq.heappush(min_heap, (-diff, num))
+
+    # Extract the 5 closest unique numbers from the heap
+    closest_numbers = []
+    while len(closest_numbers) < 5 and min_heap:
+        _, num = heapq.heappop(min_heap)
+        if num not in unique_numbers:
+            closest_numbers.append(num)
+            unique_numbers.add(num)
+
+    # Return the closest numbers in sorted order
+    return sorted(closest_numbers)
+
 # s1 = phy
-#s2 = math
+# s2 = math
 # s3 = chem   dont change the order
+
 
 def z_cal (s1,s2,s3,math=True):
   
@@ -59,7 +99,8 @@ def sybol_cal(sybol):
 # print(sybol_cal("S"))
 seleMin = []
 seleMax = []
-
+all_dup = []
+final_selc = []
 def guess_es (z,syb1,syb2,syb3):
     count = 0
     range_s1 = sybol_cal(syb1)
@@ -80,34 +121,36 @@ def guess_es (z,syb1,syb2,syb3):
                 # break
                 for s2_2 in range(range_s2[0],range_s2[1]+1):
                     for s3_3 in range(range_s3[0],range_s3[1]+1):
-                        if len(seleMax) >= 5:
-                           break
+                        # if len(seleMax) >= 5:
+                        #    break
                         calculated_z = z_cal(s1_1,s2_2,s3_3,True)
-                        if z-0.1 < calculated_z < z:
-                           seleMin.append(f"{calculated_z} {z} {s1_1} {s2_2} {s3_3}")
-                        if z < calculated_z < z+0.1:
-                           seleMax.append(f"{calculated_z} {z} {s1_1} {s2_2} {s3_3}")
+                        if z-0.1 < calculated_z < z+0.1:
+                           seleMin.append(f"{calculated_z} #  {s1_1} {s2_2} {s3_3}")
+                        # if z < calculated_z < z+0.1:
+                        #    seleMax.append(f"{calculated_z} {z} {s1_1} {s2_2} {s3_3}")
                         
                         
-                           count += 1
+                        count += 1
                         #    if count == 5:
                         #       break
-                           print(count)
+                        # print(count)
+            for kkk in seleMin:
+               seleMax.append(float(kkk.split("#")[0]))
+
+
+            closer  = (get_closest_numbers(z,seleMax))
+            for lk in closer:
+               find_indexes(seleMax,lk)
+            for cl in all_dup:
+               
+               final_selc.append(seleMin[cl])
+
             
-            while True:
-               if len(seleMin) >5:
-                  seleMin.pop(0)
-               else:
-                  break
-            
-            # print(sele)
-            print(len(seleMax))
-            print((seleMax))
-            print((seleMin))
-            print(len(seleMin))
+            print(final_selc)
+            print(len(final_selc))
         else:
            print("not working")
-guess_es(1.9485,"A","A","C")
+guess_es(1.9485,"C","C","A")
 
 
 
