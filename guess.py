@@ -28,7 +28,7 @@ SndevBio = 15.26
 #s2 = math
 # s3 = chem   dont change the order
 
-def z_cal (s1,s2,s3,math):
+def z_cal (s1,s2,s3,math=True):
   
     if math == True:
       zed = ((s1 - phyMean) /SndevPhy) + ((s2 - mathMean) /SndevMath) +((s3 - chemMean) /SndevChem)
@@ -57,7 +57,8 @@ def sybol_cal(sybol):
    
 
 # print(sybol_cal("S"))
-   
+seleMin = []
+seleMax = []
 
 def guess_es (z,syb1,syb2,syb3):
     count = 0
@@ -65,19 +66,47 @@ def guess_es (z,syb1,syb2,syb3):
     range_s2 = sybol_cal(syb2)
     range_s3 = sybol_cal(syb3)
     if z_cal(range_s1[0],range_s2[0],range_s3[0],True) > z:
-      print("grette")
+    #   print("grette")
+      print("not working")
+
     else:
     #   print("chill")
-        print( z_cal(range_s1[0],range_s2[0],range_s3[0],True),z)
+        if z_cal(range_s1[1],range_s2[1],range_s3[1],True) > z:
+            
+            # print(z_cal(range_s1[1],range_s2[1],range_s3[1],True),z)
+            # print( z_cal(range_s1[0],range_s2[0],range_s3[0],True),z)
 
-        for s1_1 in range(range_s1[0],range_s1[1]+1) :
-            for s2_2 in range(range_s2[0],range_s2[1]+1):
-                for s3_3 in range(range_s3[0],range_s3[1]+1):
-                    print(s1_1,s2_2,s3_3)
-                    count += 1
-                    print(count)
-
-
+            for s1_1 in range(range_s1[0],range_s1[1]+1) :
+                # break
+                for s2_2 in range(range_s2[0],range_s2[1]+1):
+                    for s3_3 in range(range_s3[0],range_s3[1]+1):
+                        if len(seleMax) >= 5:
+                           break
+                        calculated_z = z_cal(s1_1,s2_2,s3_3,True)
+                        if z-0.1 < calculated_z < z:
+                           seleMin.append(f"{calculated_z} {z} {s1_1} {s2_2} {s3_3}")
+                        if z < calculated_z < z+0.1:
+                           seleMax.append(f"{calculated_z} {z} {s1_1} {s2_2} {s3_3}")
+                        
+                        
+                           count += 1
+                        #    if count == 5:
+                        #       break
+                           print(count)
+            
+            while True:
+               if len(seleMin) >5:
+                  seleMin.pop(0)
+               else:
+                  break
+            
+            # print(sele)
+            print(len(seleMax))
+            print((seleMax))
+            print((seleMin))
+            print(len(seleMin))
+        else:
+           print("not working")
 guess_es(1.9485,"A","A","C")
 
 
