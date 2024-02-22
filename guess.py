@@ -198,7 +198,7 @@ def guess_es (z,syb1,syb2,syb3,math=True):
 # s3 = chem   dont change the order
 
 
-print(out_str(guess_es(2.5185,"S","S","A",False)))
+#print(out_str(guess_es(2.5185,"S","S","A",False)))
 
 
 
